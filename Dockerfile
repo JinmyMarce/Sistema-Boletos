@@ -6,19 +6,15 @@ WORKDIR /var/www/html
 
 # Instala las dependencias del sistema necesarias para las extensiones PHP
 # 'libpq-dev' es crucial para pdo_pgsql
-# 'freetype-dev', 'jpeg-dev', 'png-dev' son comunes para extensiones de imagen como GD (si la usas)
-RUN apk add --no-cache \
-    libpq-dev \
-    freetype-dev \
-    jpeg-dev \
-    png-dev
+RUN apk add --no-cache libpq-dev
 
 # Instala extensiones PHP comunes que Laravel suele necesitar.
 # 'pdo_pgsql' es para PostgreSQL.
 RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath opcache
 
-# Si necesitas la extensión GD (para manipulación de imágenes), descomenta la siguiente línea.
-# También asegúrate de que 'freetype-dev', 'jpeg-dev', 'png-dev' estén instalados arriba.
+# Si necesitas la extensión GD (para manipulación de imágenes), descomenta las siguientes líneas
+# después de verificar los nombres correctos de los paquetes Alpine para libpng, libjpeg, libfreetype
+# y el RUN apk add --no-cache libpng-dev libjpeg-turbo-dev libfreetype-dev
 # RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 #    && docker-php-ext-install -j$(nproc) gd
 
