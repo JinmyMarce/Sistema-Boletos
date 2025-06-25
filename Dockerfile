@@ -42,36 +42,3 @@ CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
 # RUN php artisan config:cache
 # RUN php artisan route:cache
 # RUN php artisan view:cache
-# Usa una imagen oficial de PHP con extensiones necesarias
-FROM php:8.2-fpm
-
-# Instala dependencias del sistema
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    git \
-    curl
-
-# Instala Composer
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
-
-# Establece el directorio de trabajo
-WORKDIR /var/www
-
-# Copia los archivos del proyecto
-COPY . .
-
-# Instala dependencias de PHP
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# Da permisos a la carpeta de almacenamiento y caché
-RUN chown -R www-data:www-data storage bootstrap/cache
-
-# Expone el puerto 8000
-EXPOSE 8000
-
-# Comando para iniciar el servidor
-CMD php artisan serve --host=0.0.0.0 --port=8000
