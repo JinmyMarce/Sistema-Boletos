@@ -6,7 +6,8 @@ WORKDIR /var/www/html
 
 # Instala las dependencias del sistema necesarias para las extensiones PHP
 # 'libpq-dev' es crucial para pdo_pgsql
-RUN apk add --no-cache libpq-dev
+# 'oniguruma-dev' es necesario para la extensión mbstring
+RUN apk add --no-cache libpq-dev oniguruma-dev
 
 # Instala extensiones PHP comunes que Laravel suele necesitar.
 # 'pdo_pgsql' es para PostgreSQL.
