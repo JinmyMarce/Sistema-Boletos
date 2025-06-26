@@ -28,7 +28,7 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Copia el resto de tu aplicación Laravel al contenedor.
 COPY . .
 
-# Copia el archivo de configuración de Supervisor
+# Copia el archivo de configuración de Supervisor a /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Genera la APP_KEY si no está en el .env de Render. (Esto es opcional si ya la tienes en Render)
@@ -44,7 +44,7 @@ RUN chown -R www-data:www-data /var/www/html/storage \
 EXPOSE 80
 
 # Comando para iniciar Nginx y PHP-FPM usando Supervisor.
-# Modificamos la ruta para que apunte al archivo que acabamos de copiar
+# Mantenemos el CMD original ya que el Supervisor de la imagen base debería escanear conf.d
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
 
 # Opcional: Si quieres limpiar la caché de configuración, rutas o vistas durante el build.
