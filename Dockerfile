@@ -10,6 +10,7 @@ RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath opcache
 
 # Copia composer.json y composer.lock primero
 COPY composer.json composer.lock ./
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Instala dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader --no-scripts
